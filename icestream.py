@@ -18,22 +18,34 @@ class IceStream:
     def __init__(self, **kwargs):
         """__init__"""
 
+        encoders_mux = {
+            'vorbisenc': 'oggmux',
+            'lame': 'id3v2mux'
+        }
+
         gst = shutil.which('gst-launch-1.0')
 
         if not gst:
             click.secho('gst-launch-1.0 is required, please install it first', fg='red')
-            sys.exit(1)
+            sys.exit(-1)
 
         kwargs['gst'] = gst
 
-        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} ! oggmux ! shout2send '
+        if kwargs.get('encoder') in encoders_mux:
+            kwargs['mux'] = encoders_mux[kwargs.get('encoder')]
+        else:
+            click.secho('Unavailable encoder: {}'.format(kwargs.get('encoder')))
+            sys.exit(-1)
+
+        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} ! {mux} ! shout2send '
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass.ogg -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}"'
+
         self.cmd = shlex.split(cmd.format(**kwargs))
 
     def execute(self):
         """execute"""
-        print(subprocess.run(self.cmd))
+        return subprocess.run(self.cmd)
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
@@ -48,7 +60,7 @@ class IceStream:
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
-    IceStream(**kwargs).execute()
+    print(IceStream(**kwargs).execute())
 
 if __name__ == "__main__":
     main()
