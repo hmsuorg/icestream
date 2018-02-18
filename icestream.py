@@ -23,6 +23,8 @@ class IceStream:
             'lamemp3enc': 'id3v2mux'
         }
 
+        bitrates = [96, 128, 192, 320]
+
         gst = shutil.which('gst-launch-1.0')
         kwargs['ext'] = 'm3u'
 
@@ -39,6 +41,10 @@ class IceStream:
             sys.exit(-1)
 
         cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
+
+        if kwargs['bitrate'] not in bitrates:
+            click.secho('Allowd bitrates are: {}'.format(bitrates))
+            sys.exit(-2)
 
         if kwargs['encoder'] == 'vorbisenc':
 
