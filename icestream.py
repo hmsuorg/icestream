@@ -38,15 +38,17 @@ class IceStream:
             click.secho('Unavailable encoder: {}'.format(kwargs.get('encoder')))
             sys.exit(-1)
 
+        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
+
         if kwargs['encoder'] == 'vorbisenc':
 
             kwargs['bitrate'] = int(kwargs.get('bitrate') * 1000)
-            cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} ! {mux} ! shout2send '
+            cmd += '! {mux} ! shout2send '
             kwargs['ext'] = 'ogg'
 
         else:
             # we do not need mux here ...
-            cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} ! shout2send '
+            cmd += '! shout2send '
 
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass.{ext} -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}"'
