@@ -20,10 +20,11 @@ class IceStream:
 
         encoders_mux = {
             'vorbisenc': 'oggmux',
-            'lame': 'id3v2mux'
+            'lamemp3enc': 'id3v2mux'
         }
 
         gst = shutil.which('gst-launch-1.0')
+        kwargs['ext'] = 'm3u'
 
         if not gst:
             click.secho('gst-launch-1.0 is required, please install it first', fg='red')
@@ -37,10 +38,18 @@ class IceStream:
             click.secho('Unavailable encoder: {}'.format(kwargs.get('encoder')))
             sys.exit(-1)
 
-        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} ! {mux} ! shout2send '
-        cmd += 'ip={ip} port={port} password="{password}" mount=/bass.ogg -t genre="{genre}" '
-        cmd += 'streamname="{streamname}" description="{desc}"'
+        if kwargs['encoder'] == 'vorbisenc':
 
+            kwargs['bitrate'] = int(kwargs.get('bitrate') * 1000)
+            cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} ! {mux} ! shout2send '
+            kwargs['ext'] = 'ogg'
+
+        else:
+            # we do not need mux here ...
+            cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} ! shout2send '
+
+        cmd += 'ip={ip} port={port} password="{password}" mount=/bass.{ext} -t genre="{genre}" '
+        cmd += 'streamname="{streamname}" description="{desc}"'
         self.cmd = shlex.split(cmd.format(**kwargs))
 
     def execute(self):
@@ -49,7 +58,8 @@ class IceStream:
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
-@click.option('--encoder', default='vorbisenc', help='gst-launch encoder, default is vorbisenc')
+@click.option('--encoder', default='lamemp3enc', help='gst-launch encoder, default is lamemp3enc')
+@click.option('--bitrate', default=192, help='gst-launch encoder bitrate, default is 192kbps')
 @click.option('--ip', default='radio2.hmsu.org',
               help='icecast ip or hostname default is radio2.hmsu.org')
 @click.option('--port', default=8000, help='icecast port default is 8000')
