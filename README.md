@@ -1,4 +1,4 @@
-### HMSU Icestrem
+### HMSU Icestream
 
 `icestream.py` is `CLI` tool, that play a role of wrapper, around gst-launch,
 used form real time audio streaming, during HMSU Radio shows.
