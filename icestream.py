@@ -46,6 +46,9 @@ class IceStream:
             click.secho('Allowd bitrates are: {}'.format(bitrates))
             sys.exit(-2)
 
+        if kwargs['save_to']:
+            cmd += '! tee name=t t. ! queue '
+
         if kwargs['encoder'] == 'vorbisenc':
 
             kwargs['bitrate'] = int(kwargs.get('bitrate') * 1000)
@@ -57,7 +60,11 @@ class IceStream:
             cmd += '! shout2send '
 
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass.{ext} -t genre="{genre}" '
-        cmd += 'streamname="{streamname}" description="{desc}"'
+        cmd += 'streamname="{streamname}" description="{desc}" '
+
+        if kwargs['save_to']:
+            cmd += 't. ! queue ! filesink location={save_to}'
+
         self.cmd = shlex.split(cmd.format(**kwargs))
 
     def execute(self):
@@ -77,6 +84,7 @@ class IceStream:
 @click.option('--streamname', default='HMSU Radio',
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', help='icecast metadata - stream description aka tcodnb')
+@click.option('--save-to', help='save stream to file')
 def main(**kwargs):
     print(IceStream(**kwargs).execute())
 
