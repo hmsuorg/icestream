@@ -26,7 +26,7 @@ class IceStream:
         bitrates = [96, 128, 192, 320]
 
         gst = shutil.which('gst-launch-1.0')
-        kwargs['ext'] = 'm3u'
+        kwargs['ext'] = 'mp3'
 
         if not gst:
             click.secho('gst-launch-1.0 is required, please install it first', fg='red')
