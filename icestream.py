@@ -59,7 +59,7 @@ class IceStream:
             # we do not need mux here ...
             cmd += '! shout2send '
 
-        cmd += 'ip={ip} port={port} password="{password}" mount=/bass.{ext} -t genre="{genre}" '
+        cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
 
         if kwargs['save_to']:
