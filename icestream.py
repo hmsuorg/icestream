@@ -18,27 +18,15 @@ class IceStream:
     def __init__(self, **kwargs):
         """__init__"""
 
-        encoders_mux = {
-            'vorbisenc': 'oggmux',
-            'lamemp3enc': 'id3v2mux'
-        }
-
         bitrates = [96, 128, 192, 320]
 
         gst = shutil.which('gst-launch-1.0')
-        kwargs['ext'] = 'mp3'
 
         if not gst:
             click.secho('gst-launch-1.0 is required, please install it first', fg='red')
             sys.exit(-1)
 
         kwargs['gst'] = gst
-
-        if kwargs.get('encoder') in encoders_mux:
-            kwargs['mux'] = encoders_mux[kwargs.get('encoder')]
-        else:
-            click.secho('Unavailable encoder: {}'.format(kwargs.get('encoder')))
-            sys.exit(-1)
 
         cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
 
@@ -49,15 +37,7 @@ class IceStream:
         if kwargs['save_to']:
             cmd += '! tee name=t t. ! queue '
 
-        if kwargs['encoder'] == 'vorbisenc':
-
-            kwargs['bitrate'] = int(kwargs.get('bitrate') * 1000)
-            cmd += '! {mux} ! shout2send '
-            kwargs['ext'] = 'ogg'
-
-        else:
-            # we do not need mux here ...
-            cmd += '! shout2send '
+        cmd += '! shout2send '
 
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
@@ -66,7 +46,7 @@ class IceStream:
             cmd += 't. ! queue ! filesink location={save_to}'
 
         self.cmd = shlex.split(cmd.format(**kwargs))
-
+        print(cmd.format(**kwargs))
     def execute(self):
         """execute"""
         return subprocess.run(self.cmd)
