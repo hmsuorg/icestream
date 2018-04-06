@@ -16,7 +16,7 @@ setup(
     author_email='targy@hmsu.org',
     url='https://github.com/hmsuorg/icestream',
     packages=find_packages(),
-    # test_suite='hctlp.tests',
+    test_suite='test_icestream',
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
