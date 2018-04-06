@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/hmsuorg/icestream.svg?branch=master)](https://travis-ci.org/hmsuorg/icestream)
+[![PyPI](https://img.shields.io/pypi/pyversions/Django.svg)](https://travis-ci.org/hmsuorg/icestream)
+
 ### HMSU Online Radio - Icestream
 
 `icestream.py` is `CLI` tool, that play a role of wrapper, around gst-launch,
