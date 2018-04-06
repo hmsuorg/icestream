@@ -2,8 +2,19 @@ Changelog
 =========
 
 
+0.3.5 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.5' Remove coveralls from tox.ini. [Hakini]
+- Bump version to 0.3.5. [Hakini]
+- Remove coveralls from tox. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fixes in use cases when gst is not
+  installed. [Hakini]
+
+
 0.3.4 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.4' Fixes in use cases when gst is not
   installed. [Hakini]
 - Bump version to 0.3.4. [Hakini]
