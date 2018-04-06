@@ -2,8 +2,20 @@ Changelog
 =========
 
 
+0.3.3 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.3' Fix gst and tests to pass travis-ci.
+  [Hakini]
+- Bump version to 0.3.3. [Hakini]
+- In case gst is missing we fallback to default path. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Remove VERSION file in favor of
+  setup.py. [Hakini]
+
+
 0.3.2 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.2' Remove VERSION file in favor of setup.py.
   [Hakini]
 - Remove VERSION file, setup.py will keep the version number. [Hakini]
