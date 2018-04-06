@@ -27,6 +27,8 @@ class IceStream:
             sys.exit(-1)
 
         kwargs['gst'] = gst
+        kwargs['encoder'] = 'lamemp3enc'
+
         self.__params = kwargs
 
     def cmd(self):
@@ -58,7 +60,6 @@ class IceStream:
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
-@click.option('--encoder', default='lamemp3enc', help='gst-launch encoder, default is lamemp3enc')
 @click.option('--bitrate', default=192, help='gst-launch encoder bitrate, default is 192kbps')
 @click.option('--ip', default='radio2.hmsu.org',
               help='icecast ip or hostname default is radio2.hmsu.org')
