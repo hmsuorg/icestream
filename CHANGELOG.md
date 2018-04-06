@@ -2,8 +2,70 @@ Changelog
 =========
 
 
+0.3.5 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.5' Remove coveralls from tox.ini. [Hakini]
+- Bump version to 0.3.5. [Hakini]
+- Remove coveralls from tox. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fixes in use cases when gst is not
+  installed. [Hakini]
+
+
+0.3.4 (2018-04-06)
+------------------
+- Hook: update chnagelog. [Hakini]
+- Merge branch 'release/0.3.4' Fixes in use cases when gst is not
+  installed. [Hakini]
+- Bump version to 0.3.4. [Hakini]
+- Fixes around use cases when gst is not installed. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fix gst and tests to pass travis-
+  ci. [Hakini]
+
+
+0.3.3 (2018-04-06)
+------------------
+- Hook: update chnagelog. [Hakini]
+- Merge branch 'release/0.3.3' Fix gst and tests to pass travis-ci.
+  [Hakini]
+- Bump version to 0.3.3. [Hakini]
+- In case gst is missing we fallback to default path. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Remove VERSION file in favor of
+  setup.py. [Hakini]
+
+
+0.3.2 (2018-04-06)
+------------------
+- Hook: update chnagelog. [Hakini]
+- Merge branch 'release/0.3.2' Remove VERSION file in favor of setup.py.
+  [Hakini]
+- Remove VERSION file, setup.py will keep the version number. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fix VERSION path, because of
+  travis-ci error. [Hakini]
+
+
+0.3.1 (2018-04-06)
+------------------
+- Hook: update chnagelog. [Hakini]
+- Merge branch 'release/0.3.1' Fix VERSION path, because of travis-ci
+  error. [Hakini]
+- Bump version to 0.3.1. [Hakini]
+- Fix path of VERSION file, travis-ci fail with it. [Hakini]
+- Merge branch 'master' into develop Github sync. [Hakini]
+- Merge pull request #15 from hmsuorg/develop. [Di Mita Hakini]
+
+  Improved README.md adding of .travis.yml and tox.ini files for CI
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Improved README.md adding of
+  .travis.yml and tox.ini files for CI. [Hakini]
+
+
 0.3.0 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.0' Improved README.md adding of .travis.yml
   and tox.ini files for CI. [Hakini]
 - Bump version to 0.3.0 and improved README.md. [Hakini]
