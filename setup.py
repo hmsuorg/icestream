@@ -3,14 +3,9 @@ from setuptools import setup, find_packages
 
 _dev = {'develop': ["pylint", "coverage", ]}
 
-def get_version():
-    """get_version"""
-    with open('./VERSION') as version:
-        return version.read()
-
 setup(
     name='icestream',
-    version=get_version(),
+    version='0.3.2',
     description='This script provide us an easy way to stream HMSU radio shows to icecast server',
     author='Dimitar Dimitrov',
     author_email='targy@hmsu.org',
