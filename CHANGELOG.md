@@ -2,8 +2,25 @@ Changelog
 =========
 
 
+0.3.0 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.0' Improved README.md adding of .travis.yml
+  and tox.ini files for CI. [Hakini]
+- Bump version to 0.3.0 and improved README.md. [Hakini]
+- Add .travis.yml and tox.ini files fix setup.py. [Hakini]
+- Merge branch 'master' into develop Merge after git dev to master, pull
+  request. [Hakini]
+- Merge pull request #14 from hmsuorg/develop. [Di Mita Hakini]
+
+  Sync via github Develop
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fix setup.py and some other typos.
+  [Hakini]
+
+
 0.2.1 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.2.1' Fix setup.py and some other typos.
   [Hakini]
 - Bump version to 0.2.1. [Hakini]
