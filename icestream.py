@@ -7,6 +7,7 @@ Author: targy@hmsu.org
 """
 import sys
 import subprocess
+import time
 import shlex
 import shutil
 import click
@@ -27,6 +28,8 @@ class IceStream:
             sys.exit(-1)
 
         kwargs['gst'] = gst
+        kwargs['encoder'] = 'lamemp3enc'
+
         self.__params = kwargs
 
     def cmd(self):
@@ -38,17 +41,20 @@ class IceStream:
             click.secho('Allowd bitrates are: {}'.format(self.__bitrates))
             sys.exit(-2)
 
-        if self.__params['save_to']:
-            cmd += '! tee name=t t. ! queue '
+        # save_to
+        cmd += '! tee name=t t. ! queue '
 
         cmd += '! shout2send '
 
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
 
-        if self.__params['save_to']:
-            cmd += 't. ! queue ! filesink location={save_to}'
+        # save_to
+        self.__params['save_to'] = '{}_{}.mp3'.format(
+            self.__params.get('streamname'), self.__params.get('desc')).replace(' ', '_')
+        cmd += 't. ! queue ! filesink location={save_to}'
 
+        print(cmd.format(**self.__params))
         cmd = shlex.split(cmd.format(**self.__params))
         return cmd
 
@@ -58,18 +64,16 @@ class IceStream:
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
-@click.option('--encoder', default='lamemp3enc', help='gst-launch encoder, default is lamemp3enc')
-@click.option('--bitrate', default=192, help='gst-launch encoder bitrate, default is 192kbps')
-@click.option('--ip', default='radio2.hmsu.org',
-              help='icecast ip or hostname default is radio2.hmsu.org')
+@click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 192kbps')
+@click.option('--ip', default='radio.hmsu.org',
+              help='icecast ip or hostname default is radio.hmsu.org')
 @click.option('--port', default=8000, help='icecast port default is 8000')
 @click.option('--password', help='icecast password')
 @click.option('--genre', default='drum and bass',
               help='icecast metadata - stream genre, default is dnb')
-@click.option('--streamname', default='HMSU Radio',
+@click.option('--streamname', default='HMSU Online Radio',
               help='icecast metadata - stream name, defautl is HMSU Radio')
-@click.option('--desc', help='icecast metadata - stream description aka tcodnb')
-@click.option('--save-to', help='save stream to file')
+@click.option('--desc', default='The Colours Of Drum and Bass', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
     print(IceStream(**kwargs).execute())
 
