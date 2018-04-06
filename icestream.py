@@ -18,12 +18,12 @@ class IceStream:
         """__init__"""
 
         self.__bitrates = [96, 128, 192, 320]
-        gst = shutil.which(kwargs.get('gst'))
+        self.gst = shutil.which(kwargs.get('gst'))
 
-        if not gst:
-            gst = '/usr/bin/gst-launch-1.0'
+        if not self.gst:
+            self.gst = '/usr/bin/gst-launch-1.0'
 
-        kwargs['gst'] = gst
+        kwargs['gst'] = self.gst
         kwargs['encoder'] = 'lamemp3enc'
 
         self.__params = kwargs
