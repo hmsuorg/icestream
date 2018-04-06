@@ -18,7 +18,7 @@ class IceStream:
     def __init__(self, **kwargs):
         """__init__"""
 
-        bitrates = [96, 128, 192, 320]
+        self.__bitrates = [96, 128, 192, 320]
 
         gst = shutil.which('gst-launch-1.0')
 
@@ -27,14 +27,18 @@ class IceStream:
             sys.exit(-1)
 
         kwargs['gst'] = gst
+        self.__params = kwargs
+
+    def cmd(self):
+        """cmd"""
 
         cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
 
-        if kwargs['bitrate'] not in bitrates:
-            click.secho('Allowd bitrates are: {}'.format(bitrates))
+        if self.__params['bitrate'] not in self.__bitrates:
+            click.secho('Allowd bitrates are: {}'.format(self.__bitrates))
             sys.exit(-2)
 
-        if kwargs['save_to']:
+        if self.__params['save_to']:
             cmd += '! tee name=t t. ! queue '
 
         cmd += '! shout2send '
@@ -42,14 +46,15 @@ class IceStream:
         cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
 
-        if kwargs['save_to']:
+        if self.__params['save_to']:
             cmd += 't. ! queue ! filesink location={save_to}'
 
-        self.cmd = shlex.split(cmd.format(**kwargs))
-        print(cmd.format(**kwargs))
+        cmd = shlex.split(cmd.format(**self.__params))
+        return cmd
+
     def execute(self):
         """execute"""
-        return subprocess.run(self.cmd)
+        return subprocess.run(self.cmd())
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
