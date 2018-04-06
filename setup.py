@@ -5,7 +5,7 @@ _dev = {'develop': ["pylint", "coverage", ]}
 
 def get_version():
     """get_version"""
-    with open('VERSION') as version:
+    with open('./VERSION') as version:
         return version.read()
 
 setup(
