@@ -2,8 +2,20 @@ Changelog
 =========
 
 
+0.3.4 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.4' Fixes in use cases when gst is not
+  installed. [Hakini]
+- Bump version to 0.3.4. [Hakini]
+- Fixes around use cases when gst is not installed. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fix gst and tests to pass travis-
+  ci. [Hakini]
+
+
 0.3.3 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.3' Fix gst and tests to pass travis-ci.
   [Hakini]
 - Bump version to 0.3.3. [Hakini]
