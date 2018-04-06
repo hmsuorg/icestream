@@ -1,19 +1,11 @@
 #!/usr/bin/env python3
-import os
-from os.path import expanduser
-import sys
-import shutil
-import getpass
-import glob
-from subprocess import call
-from distutils.command.build_py import build_py as _build_py
 from setuptools import setup, find_packages
 
 _dev = {'develop': ["pylint", "coverage", ]}
 
 def get_version():
     """get_version"""
-    with open('VERSION.txt') as version:
+    with open('VERSION') as version:
         return version.read()
 
 setup(
