@@ -7,7 +7,6 @@ Author: targy@hmsu.org
 """
 import sys
 import subprocess
-import time
 import shlex
 import shutil
 import click
@@ -54,7 +53,6 @@ class IceStream:
             self.__params.get('streamname'), self.__params.get('desc')).replace(' ', '_')
         cmd += 't. ! queue ! filesink location={save_to}'
 
-        print(cmd.format(**self.__params))
         cmd = shlex.split(cmd.format(**self.__params))
         return cmd
 
