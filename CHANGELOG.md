@@ -2,8 +2,19 @@ Changelog
 =========
 
 
+0.3.2 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.2' Remove VERSION file in favor of setup.py.
+  [Hakini]
+- Remove VERSION file, setup.py will keep the version number. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Fix VERSION path, because of
+  travis-ci error. [Hakini]
+
+
 0.3.1 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.1' Fix VERSION path, because of travis-ci
   error. [Hakini]
 - Bump version to 0.3.1. [Hakini]
