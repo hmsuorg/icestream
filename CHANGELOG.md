@@ -2,8 +2,20 @@ Changelog
 =========
 
 
+0.3.7 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.7' Remove py34 and py35. [Hakini]
+- Bump version to 0.3.7. [Hakini]
+- Remove python3.4 and python3.5. [Hakini]
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Adding of status badges and more
+  travis-ci tests. [Hakini]
+- Merge branch 'master' into develop sync with github. [Hakini]
+
+
 0.3.6 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.6' Adding of status badges and more travis-
   ci tests. [Hakini]
 - Bump version to 0.3.6. [Hakini]
