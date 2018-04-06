@@ -67,12 +67,6 @@ class TestIceStreamClick(unittest.TestCase):
         result = icestream.IceStream(**self.__params).cmd()
         self.assertEqual(result, shlex.split('{} alsasrc ! queue ! audioconvert ! lamemp3enc bitrate=192 ! tee name=t t. ! queue ! shout2send ip=radio2.hmsu.org port=9999 password="yourpassword" mount=/bass -t genre="dnb" streamname="dnb stream" description="dnb desc" t. ! queue ! filesink location=dnb_stream_dnb_desc.mp3'.format(self.__gst)))
 
-    def test_icestream_gst(self):
-        with self.assertRaises(Exception) as context:
-            self.__params['gst'] = 'blabla-0.1'
-            result = icestream.IceStream(**self.__params)
-        self.assertTrue('gst-launch-1.0 is required, please install it first' in str(context.exception))
-
     def test_icestream_execute_mock(self):
 
         result = icestream.IceStream(**self.__params)
