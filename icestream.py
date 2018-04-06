@@ -5,7 +5,6 @@
 This scripts provide a gst-launch wrapper, used for streaming HMSU radio shows.
 Author: targy@hmsu.org
 """
-import sys
 import subprocess
 import shlex
 import shutil
@@ -19,12 +18,10 @@ class IceStream:
         """__init__"""
 
         self.__bitrates = [96, 128, 192, 320]
-
-        gst = shutil.which('gst-launch-1.0')
+        gst = shutil.which(kwargs.get('gst'))
 
         if not gst:
-            click.secho('gst-launch-1.0 is required, please install it first', fg='red')
-            sys.exit(-1)
+            raise Exception('gst-launch-1.0 is required, please install it first')
 
         kwargs['gst'] = gst
         kwargs['encoder'] = 'lamemp3enc'
@@ -37,8 +34,7 @@ class IceStream:
         cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
 
         if self.__params['bitrate'] not in self.__bitrates:
-            click.secho('Allowd bitrates are: {}'.format(self.__bitrates))
-            sys.exit(-2)
+            raise Exception('Allowd bitrates are: {}'.format(self.__bitrates))
 
         # save_to
         cmd += '! tee name=t t. ! queue '
@@ -73,7 +69,8 @@ class IceStream:
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', default='The Colours Of Drum and Bass', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
-    print(IceStream(**kwargs).execute())
+    kwargs['gst'] = 'gst-launch-1.0'
+    return IceStream(**kwargs).execute()
 
 if __name__ == "__main__":
-    main()
+    print(main())
