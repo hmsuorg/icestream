@@ -58,7 +58,7 @@ class IceStream:
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
-@click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 192kbps')
+@click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 128kbps')
 @click.option('--ip', default='radio.hmsu.org',
               help='icecast ip or hostname default is radio.hmsu.org')
 @click.option('--port', default=8000, help='icecast port default is 8000')

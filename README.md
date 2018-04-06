@@ -16,7 +16,7 @@ Example usage
 
 the above command will create `lamemp3enc` and will stream the data to `YOUR_ICECAST_SERVE_IP` on port `8888`.
 
-the default bitrate is `192kbps` if you wish to change the value use the `--bitrate` option.
+the default bitrate is `128kbps` if you wish to change the value use the `--bitrate` option.
 The valid values are: `96`, `128`, `192`, `320` `kbps`.
 
 Author targy@hmsu.org
