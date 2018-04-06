@@ -2,8 +2,28 @@ Changelog
 =========
 
 
+0.2.1 (2018-04-06)
+------------------
+- Merge branch 'release/0.2.1' Fix setup.py and some other typos.
+  [Hakini]
+- Bump version to 0.2.1. [Hakini]
+- Change bitrage from 192 to 128 in click defaults. [Hakini]
+- Fix setup.py and update readme. [Hakini]
+- Merge branch 'master' into develop. [Hakini]
+- Merge pull request #13 from hmsuorg/develop. [Di Mita Hakini]
+
+  Develop
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Version 0.2.0 comes with unittests
+  and improved options. The options `--encoder` and `--save-to` was
+  removed. Now they are supported by API by default. The click defaults
+  also was improved. [Hakini]
+- Merge branch 'master' into develop. [Hakini]
+
+
 0.2.0 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.2.0' Version 0.2.0 comes with unittests and
   improved options. The options `--encoder` and `--save-to` was removed.
   Now they are supported by API by default. The click defaults also was
