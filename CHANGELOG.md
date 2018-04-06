@@ -2,8 +2,24 @@ Changelog
 =========
 
 
+0.3.1 (2018-04-06)
+------------------
+- Merge branch 'release/0.3.1' Fix VERSION path, because of travis-ci
+  error. [Hakini]
+- Bump version to 0.3.1. [Hakini]
+- Fix path of VERSION file, travis-ci fail with it. [Hakini]
+- Merge branch 'master' into develop Github sync. [Hakini]
+- Merge pull request #15 from hmsuorg/develop. [Di Mita Hakini]
+
+  Improved README.md adding of .travis.yml and tox.ini files for CI
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Improved README.md adding of
+  .travis.yml and tox.ini files for CI. [Hakini]
+
+
 0.3.0 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.0' Improved README.md adding of .travis.yml
   and tox.ini files for CI. [Hakini]
 - Bump version to 0.3.0 and improved README.md. [Hakini]
