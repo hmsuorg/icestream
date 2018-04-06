@@ -2,8 +2,32 @@ Changelog
 =========
 
 
+0.2.0 (2018-04-06)
+------------------
+- Merge branch 'release/0.2.0' Version 0.2.0 comes with unittests and
+  improved options. The options `--encoder` and `--save-to` was removed.
+  Now they are supported by API by default. The click defaults also was
+  improved. [Hakini]
+- Bump version to 0.2.0. [Hakini]
+- Write moreunittests and API improvments. [Hakini]
+- Write unittests. [Hakini]
+- Merge branch 'feature/testing' into develop remove encoder and save_to
+  as click options, now they are done by default. [Hakini]
+- Change click option defaults, remove save_to as options, now default
+  operation. [Hakini]
+- Lamemp3enc encoder is no longer a click option. [Hakini]
+- Refactoring of icestream. [Hakini]
+- Merge pull request #12 from hmsuorg/develop. [Di Mita Hakini]
+
+  Develop
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop First release of HMSU Oneline Radio
+  icestream. [Hakini]
+
+
 0.1.0 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.1.0' First release of HMSU Oneline Radio
   icestream. [Hakini]
 - Bump version to 0.1.0. [Hakini]
