@@ -1,10 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
 This scripts provide a gst-launch wrapper, used for streaming HMSU radio shows.
 Author: targy@hmsu.org
 """
+import time
+import datetime
 import subprocess
 import shlex
 import shutil
@@ -54,7 +56,25 @@ class IceStream:
 
     def execute(self):
         """execute"""
-        return subprocess.run(self.cmd())
+
+        with subprocess.Popen(
+            self.cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
+
+            for line in p.stdout:
+                print(line, end='') # process line here
+
+            error = p.stderr.readlines()
+
+        if p.returncode != 0:
+
+            error_info = 'ERROR: {}: {} on port: {}'.format(
+                error[0].split(':')[-1].strip(), self.__params.get('ip'), self.__params.get('port'))
+
+            error_add = error[-1].split(':')[-1].strip().split('=')[-1]
+
+            print('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add))
+            time.sleep(3)
+            self.execute()
 
 @click.command()
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
@@ -71,6 +91,5 @@ class IceStream:
 def main(**kwargs):
     kwargs['gst'] = 'gst-launch-1.0'
     return IceStream(**kwargs).execute()
-
 if __name__ == "__main__":
-    print(main())
+    main()
