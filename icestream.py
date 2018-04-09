@@ -20,13 +20,7 @@ class IceStream:
         """__init__"""
 
         self.__bitrates = [96, 128, 192, 320]
-        self.gst = shutil.which(kwargs.get('gst'))
-
-        if not self.gst:
-            self.gst = '/usr/bin/gst-launch-1.0'
-
-        kwargs['gst'] = self.gst
-
+        self.gst = kwargs.get('gst')
         self.__params = kwargs
 
     def cmd(self):
@@ -50,14 +44,15 @@ class IceStream:
             self.__params.get('streamname'), self.__params.get('desc')).replace(' ', '_')
         cmd += 't. ! queue ! filesink location={save_to}'
 
-        cmd = shlex.split(cmd.format(**self.__params))
-        return cmd
+        return cmd.format(**self.__params)
 
     def execute(self):
         """execute"""
 
+        cmd = shlex.split(self.cmd())
+
         with subprocess.Popen(
-            self.cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
 
             click.secho('+++ Connecting to server: {ip} on port: {port} ...'.format(**self.__params), fg='cyan')
 
@@ -82,6 +77,7 @@ class IceStream:
             self.execute()
 
 @click.command()
+@click.option('--gst', default='gst-launch-1.0', help='gst-launch executable')
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
 @click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 128kbps')
 @click.option('--ip', default='radio.hmsu.org',
@@ -94,7 +90,7 @@ class IceStream:
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', default='The Colours Of Drum and Bass', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
-    kwargs['gst'] = 'gst-launch-1.0'
     return IceStream(**kwargs).execute()
+
 if __name__ == "__main__":
     main()
