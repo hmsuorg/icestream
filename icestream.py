@@ -26,14 +26,13 @@ class IceStream:
             self.gst = '/usr/bin/gst-launch-1.0'
 
         kwargs['gst'] = self.gst
-        kwargs['encoder'] = 'lamemp3enc'
 
         self.__params = kwargs
 
     def cmd(self):
         """cmd"""
 
-        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
+        cmd = '{gst} {source} ! queue ! audioconvert ! lamemp3enc bitrate={bitrate} '
 
         if self.__params['bitrate'] not in self.__bitrates:
             raise Exception('Allowd bitrates are: {}'.format(self.__bitrates))
@@ -60,8 +59,10 @@ class IceStream:
         with subprocess.Popen(
             self.cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
 
+            click.secho('++ Connected to server: {ip} on port: {port}'.format(**self.__params), fg='cyan')
+
             for line in p.stdout:
-                print(line, end='') # process line here
+                click.secho('-- ' + line.replace('\n', ''), fg='green') # process line here
 
             error = p.stderr.readlines()
 
@@ -72,7 +73,7 @@ class IceStream:
 
             error_add = error[-1].split(':')[-1].strip().split('=')[-1]
 
-            print('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add))
+            click.secho('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add), fg='red')
             time.sleep(3)
             self.execute()
 
