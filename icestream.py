@@ -9,7 +9,6 @@ import time
 import datetime
 import subprocess
 import shlex
-import shutil
 import click
 
 
@@ -34,9 +33,7 @@ class IceStream:
         # save_to
         cmd += '! tee name=t t. ! queue '
 
-        cmd += '! shout2send '
-
-        cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
+        cmd += '! shout2send ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
 
         # save_to
@@ -46,38 +43,48 @@ class IceStream:
 
         return cmd.format(**self.__params)
 
-    def execute(self):
+    def execute(self, cmd):
         """execute"""
 
-        cmd = shlex.split(self.cmd())
+        cmd = shlex.split(cmd)
 
-        with subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
+        try:
 
-            click.secho('+++ Connecting to server: {ip} on port: {port} ...'.format(**self.__params), fg='cyan')
+            with subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
 
-            for line in p.stdout:
-                line = line.replace('\n', '')
-                if line.startswith('WARNING'):
-                    click.secho('!!! ' + line, fg='yellow')
-                else:
-                    click.secho('*** INFO ' + line, fg='green')
+                click.secho('+++ Connecting to server: {ip} on port: {port} ...'.format(**self.__params), fg='cyan')
 
-            error = p.stderr.readlines()
+                for line in p.stdout:
+                    line = line.replace('\n', '')
 
-        if p.returncode != 0:
+                    if line.startswith('WARNING'):
+                        click.secho('!!! ' + line, fg='yellow')
 
-            error_info = '--- ERROR: {}: {} on port: {}'.format(
-                error[0].split(':')[-1].strip(), self.__params.get('ip'), self.__params.get('port'))
+                    else:
+                        click.secho('*** INFO ' + line, fg='green')
 
-            error_add = error[-1].split(':')[-1].strip().split('=')[-1]
+                error = p.stderr.readlines()
 
-            click.secho('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add), fg='red')
-            time.sleep(3)
-            self.execute()
+        except FileNotFoundError:
+            # we got this exception in case gst-launch is doesn't installed
+            raise FileNotFoundError('gst-launch-1.0 is not installed')
+
+        else:
+
+            if p.returncode != 0:
+
+                error_info = '--- ERROR: {}: {} on port: {}'.format(
+                    error[0].split(':')[-1].strip(), self.__params.get('ip'), self.__params.get('port'))
+
+                error_add = error[-1].split(':')[-1].strip().split('=')[-1]
+
+                click.secho('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add), fg='red')
+
+                return False
 
 @click.command()
-@click.option('--gst', default='gst-launch-1.0', help='gst-launch executable')
+@click.option('--gst', default='gst1-launch-1.0', help='gst-launch executable')
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
 @click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 128kbps')
 @click.option('--ip', default='radio.hmsu.org',
@@ -90,7 +97,13 @@ class IceStream:
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', default='The Colours Of Drum and Bass', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
-    return IceStream(**kwargs).execute()
+
+    ices = IceStream(**kwargs)
+    result = ices.execute(ices.cmd())
+
+    if result is False:
+        time.sleep(3)
+        ices.execute(ices.cmd())
 
 if __name__ == "__main__":
     main()

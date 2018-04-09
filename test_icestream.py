@@ -76,9 +76,17 @@ class TestIceStreamClick(unittest.TestCase):
         result = icestream.IceStream(**self.__params)
         self.assertEqual('gst-launch-1.0', result.gst)
 
-    def test_icestream_execute_mock(self):
-
+    def test_icestream_execute_with_error(self):
         result = icestream.IceStream(**self.__params)
-        result.execute = MagicMock(return_value=0)
-        result.execute()
-        result.execute.assert_called()
+        res = result.execute('head -n1 README1.md')
+        self.assertFalse(res)
+
+    def test_icestream_execute_not_found(self):
+        result = icestream.IceStream(**self.__params)
+
+        with self.assertRaises(FileNotFoundError) as context:
+            ices = icestream.IceStream(**self.__params)
+            ices.execute('head1')
+        self.assertTrue('gst-launch-1.0 is not installed' in str(context.exception))
+
+
