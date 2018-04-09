@@ -59,16 +59,20 @@ class IceStream:
         with subprocess.Popen(
             self.cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
 
-            click.secho('++ Connected to server: {ip} on port: {port}'.format(**self.__params), fg='cyan')
+            click.secho('+++ Connecting to server: {ip} on port: {port} ...'.format(**self.__params), fg='cyan')
 
             for line in p.stdout:
-                click.secho('-- ' + line.replace('\n', ''), fg='green') # process line here
+                line = line.replace('\n', '')
+                if line.startswith('WARNING'):
+                    click.secho('!!! ' + line, fg='yellow')
+                else:
+                    click.secho('*** INFO ' + line, fg='green')
 
             error = p.stderr.readlines()
 
         if p.returncode != 0:
 
-            error_info = 'ERROR: {}: {} on port: {}'.format(
+            error_info = '--- ERROR: {}: {} on port: {}'.format(
                 error[0].split(':')[-1].strip(), self.__params.get('ip'), self.__params.get('port'))
 
             error_add = error[-1].split(':')[-1].strip().split('=')[-1]
