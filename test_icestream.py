@@ -84,9 +84,6 @@ class TestIceStreamClick(unittest.TestCase):
     def test_icestream_execute_not_found(self):
         result = icestream.IceStream(**self.__params)
 
-        with self.assertRaises(FileNotFoundError) as context:
-            ices = icestream.IceStream(**self.__params)
-            ices.execute('head1')
-        self.assertTrue('gst-launch-1.0 is not installed' in str(context.exception))
-
-
+        ices = icestream.IceStream(**self.__params)
+        result = ices.execute('head1')
+        self.assertFalse(result)
