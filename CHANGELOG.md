@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-(unreleased)
+0.4.0 (2018-04-10)
 ------------
 - Merge branch 'release/0.4.0' Version 0.4.0 comes with unittests,
   reconnection functionality, the click options was improved, new
