@@ -2,8 +2,30 @@ Changelog
 =========
 
 
+(unreleased)
+------------
+- Merge branch 'release/0.4.0' Version 0.4.0 comes with unittests,
+  reconnection functionality, the click options was improved, new
+  defaults also was introduced. [Hakini]
+- Bump version to 0.4.0. [Hakini]
+- Docs, refactoring of an execute method, add gst as click option,
+  rewrite the reconnect functionality. [Hakini]
+- Refactoring and more unittests. [Hakini]
+- Remove shutil.which, add --gst click option, shlex.split now is done
+  in execute method not in cmd. [Hakini]
+- Improve logging, separating warning log from info. [Hakini]
+- Improve logging. [Hakini]
+- Adding of reconnect strategy and error handler. [Hakini]
+- Merge pull request #17 from hmsuorg/develop. [Di Mita Hakini]
+
+  Fixes around travis-ci
+- Hook: merge - update changelog. [Hakini]
+- Merge branch 'master' into develop Remove py34 and py35. [Hakini]
+
+
 0.3.7 (2018-04-06)
 ------------------
+- Hook: update chnagelog. [Hakini]
 - Merge branch 'release/0.3.7' Remove py34 and py35. [Hakini]
 - Bump version to 0.3.7. [Hakini]
 - Remove python3.4 and python3.5. [Hakini]
