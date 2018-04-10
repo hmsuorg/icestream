@@ -1,13 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
 This scripts provide a gst-launch wrapper, used for streaming HMSU radio shows.
 Author: targy@hmsu.org
 """
+import time
+import datetime
 import subprocess
 import shlex
-import shutil
 import click
 
 
@@ -18,20 +19,14 @@ class IceStream:
         """__init__"""
 
         self.__bitrates = [96, 128, 192, 320]
-        self.gst = shutil.which(kwargs.get('gst'))
-
-        if not self.gst:
-            self.gst = '/usr/bin/gst-launch-1.0'
-
-        kwargs['gst'] = self.gst
-        kwargs['encoder'] = 'lamemp3enc'
-
+        self.gst = kwargs.get('gst')
         self.__params = kwargs
 
     def cmd(self):
-        """cmd"""
+        """cmd method will generate a gst-launch command,
+        that will make stream between gst-launch and icecast stream"""
 
-        cmd = '{gst} {source} ! queue ! audioconvert ! {encoder} bitrate={bitrate} '
+        cmd = '{gst} {source} ! queue ! audioconvert ! lamemp3enc bitrate={bitrate} '
 
         if self.__params['bitrate'] not in self.__bitrates:
             raise Exception('Allowd bitrates are: {}'.format(self.__bitrates))
@@ -39,9 +34,7 @@ class IceStream:
         # save_to
         cmd += '! tee name=t t. ! queue '
 
-        cmd += '! shout2send '
-
-        cmd += 'ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
+        cmd += '! shout2send ip={ip} port={port} password="{password}" mount=/bass -t genre="{genre}" '
         cmd += 'streamname="{streamname}" description="{desc}" '
 
         # save_to
@@ -49,14 +42,59 @@ class IceStream:
             self.__params.get('streamname'), self.__params.get('desc')).replace(' ', '_')
         cmd += 't. ! queue ! filesink location={save_to}'
 
-        cmd = shlex.split(cmd.format(**self.__params))
-        return cmd
+        return cmd.format(**self.__params)
 
-    def execute(self):
-        """execute"""
-        return subprocess.run(self.cmd())
+    def execute(self, cmd: str) -> bool:
+        """execute a shell command. it's designed to run gst-launch,
+        but, could be anything else.help
+
+        :param cmd: a shell command
+        :type cmd: str
+        :return: bool
+        :rtype: bool
+        """
+
+        cmd = shlex.split(cmd)
+
+        try:
+
+            with subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
+
+                click.secho('+++ Connecting to server: {ip} on port: {port} ...'.format(**self.__params), fg='cyan')
+
+                for line in p.stdout:
+                    line = line.replace('\n', '')
+
+                    if line.startswith('WARNING'):
+                        click.secho('!!! ' + line, fg='yellow')
+
+                    else:
+                        click.secho('*** INFO ' + line, fg='green')
+
+                error = p.stderr.readlines()
+
+        except FileNotFoundError as error:
+            # we got this exception in case when gst-launch isn't installed
+            click.secho(str(error), fg='red')
+            return False
+
+        else:
+
+            if p.returncode != 0:
+                error_info = '--- ERROR: {}: {} on port: {}'.format(
+                    error[0].split(':')[-1].strip(), self.__params.get('ip'), self.__params.get('port'))
+
+                error_add = error[-1].split(':')[-1].strip().split('=')[-1]
+
+                click.secho('{} -- {}, {}'.format(datetime.datetime.now(), error_info, error_add), fg='red')
+
+                return False
+
+            return True
 
 @click.command()
+@click.option('--gst', default='gst-launch-1.0', help='gst-launch executable')
 @click.option('--source', default='alsasrc', help='gst-launch source, default is alsasrc')
 @click.option('--bitrate', default=128, help='gst-launch encoder bitrate, default is 128kbps')
 @click.option('--ip', default='radio.hmsu.org',
@@ -69,8 +107,11 @@ class IceStream:
               help='icecast metadata - stream name, defautl is HMSU Radio')
 @click.option('--desc', default='The Colours Of Drum and Bass', help='icecast metadata - stream description aka tcodnb')
 def main(**kwargs):
-    kwargs['gst'] = 'gst-launch-1.0'
-    return IceStream(**kwargs).execute()
+    """icestream - gst-launch to icecast radio tool"""
+
+    ices = IceStream(**kwargs)
+    while ices.execute(ices.cmd()) is False:
+        time.sleep(3)
 
 if __name__ == "__main__":
-    print(main())
+    main()
