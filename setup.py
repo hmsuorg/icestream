@@ -5,7 +5,7 @@ _dev = {'develop': ["pylint", "coverage", ]}
 
 setup(
     name='icestream',
-    version='0.3.7',
+    version='0.4.0',
     description='This script provide us an easy way to stream HMSU radio shows to icecast server',
     author='Dimitar Dimitrov',
     author_email='targy@hmsu.org',
